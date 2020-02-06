@@ -7,11 +7,9 @@ jobs:
     steps:
       - uses: actions/checkout@v2
 
-      - uses: mr-smithers-excellent/docker-build-push@v2
+      - uses: elgohr/Publish-Docker-Github-Action@master
         with:
-          image: liujordan/directory-watch
-          tag: latest
-          registry: docker.io
-          dockerfile: Dockerfile
+          name: liujordan/directory-watch
+          tags: latest
           username: ${{ secrets.DOCKER_USERNAME }}
           password: ${{ secrets.DOCKER_PASSWORD }}
