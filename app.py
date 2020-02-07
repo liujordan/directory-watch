@@ -6,13 +6,15 @@ from os import walk
 from watchdog.observers import Observer
 from watchdog.events import LoggingEventHandler, FileModifiedEvent
 from pathlib import Path
+import config
 
 class MyEventHandler(LoggingEventHandler):
   def on_any_event(self, event):
     p = Path(event.src_path)
     print(list(p.parents))
     for path in list(p.parents)[1:]:
-      print(path)
+      if path in config.ignore:
+        continue
       for (dirpath, subdirList, filenames) in walk(path):
         print(dirpath, subdirList, filenames)
         if "docker-compose.yml" in filenames:
@@ -39,6 +41,6 @@ if __name__ == "__main__":
   try:
     while True:
       time.sleep(1)
-  except:
+  except KeyboardInterrupt:
     observer.stop()
   observer.join()
